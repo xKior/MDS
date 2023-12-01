@@ -6,14 +6,14 @@ using iTextSharp.text.pdf;
 
 class Program
 {
-    // Clase para los productos
+    
     class Producto
     {
         public string nombre;
         public int cantidad;
     }
 
-    // Función para realizar la búsqueda en el inventario
+    
     static int BuscarProducto(List<Producto> inventario, string nombre)
     {
         for (int i = 0; i < inventario.Count; ++i)
@@ -26,7 +26,7 @@ class Program
         return -1; // Producto no encontrado
     }
 
-    // Función que muestra el menú en la consola
+   
     static void MostrarMenu()
     {
         Console.WriteLine("\n=== Menu ===");
@@ -37,16 +37,16 @@ class Program
         Console.WriteLine("5. Cerrar sesion");
     }
 
-    // Nueva función para generar el informe en un documento PDF
+    
     static void GenerarInformePDF(List<Producto> inventario)
     {
-        // Crear un nuevo documento PDF
+        
         Document doc = new Document();
 
-        // Obtener la ruta de descargas
+       
         string descargasPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
 
-        // Crear un directorio para almacenar los informes PDF si no existe
+        
         string nombreDirectorio = Path.Combine(descargasPath, "Downloads", "Informes");
 
         if (!Directory.Exists(nombreDirectorio))
@@ -54,16 +54,16 @@ class Program
             Directory.CreateDirectory(nombreDirectorio);
         }
 
-        // Crear el nombre del archivo PDF con la fecha y hora actual
+        
         string nombreArchivo = $"{nombreDirectorio}\\Informe_{DateTime.Now:yyyy_MM_dd_HH_mm_ss}.pdf";
 
-        // Crear el archivo PDF
+        
         PdfWriter.GetInstance(doc, new FileStream(nombreArchivo, FileMode.Create));
 
-        // Abrir el documento PDF
+        
         doc.Open();
 
-        // Agregar contenido al documento PDF
+       
         doc.Add(new Paragraph("=== Inventario Actual ==="));
 
         foreach (var producto in inventario)
@@ -71,7 +71,7 @@ class Program
             doc.Add(new Paragraph($"Nombre: {producto.nombre}, Cantidad: {producto.cantidad}"));
         }
 
-        // Cerrar el documento PDF
+        
         doc.Close();
 
         Console.WriteLine($"Informe generado exitosamente: {nombreArchivo}");
@@ -79,17 +79,17 @@ class Program
 
     static void Main()
     {
-        // Este es el rol de admin, creamos un usuario y contraseña ya establecidos
+        
         string usuario;
         string contrasena = "admin1234";
 
-        // Creamos una lista llamada inventario que va a tener las variables de la clase Producto
+        
         List<Producto> inventario = new List<Producto>();
 
-        // Aquí hacemos el inicio de sesión
+        
         do
         {
-            Console.Write("Ingrese el usuario: ");
+           
             usuario = Console.ReadLine();
 
             Console.Write("Ingrese la contrasena: ");
@@ -107,14 +107,14 @@ class Program
 
         int opcion;
 
-        // Mostramos el menú para que seleccione alguna opción
+        
         do
         {
             MostrarMenu();
             Console.Write("Seleccione una opcion: ");
             opcion = int.Parse(Console.ReadLine());
 
-            // Usamos casos para el menú
+          
             switch (opcion)
             {
                 case 1:
@@ -122,7 +122,7 @@ class Program
                         char deseaIngresarMas;
                         do
                         {
-                            Producto nuevoProducto = new Producto(); // Crear una nueva instancia de Producto
+                            Producto nuevoProducto = new Producto(); 
                             Console.Write("Ingrese el nombre del producto: ");
                             nuevoProducto.nombre = Console.ReadLine();
 
@@ -153,8 +153,7 @@ class Program
 
                         int opcionModificar = int.Parse(Console.ReadLine());
 
-                        // Caso 1 es para añadir una cantidad de un producto
-                        // Caso 2 es para eliminar una cantidad de un producto
+                       
                         switch (opcionModificar)
                         {
                             case 1:
@@ -174,7 +173,7 @@ class Program
                                             inventario[indice].cantidad += cantidad;
                                             Console.WriteLine($"Se agregaron {cantidad} unidades del producto.");
                                         }
-                                        // OpcionModificar == 2
+                                        
                                         else
                                         {
                                             Console.Write("Ingrese la cantidad a eliminar: ");
@@ -198,7 +197,7 @@ class Program
                                 }
                                 break;
 
-                            // Eliminar producto
+                            
                             case 3:
                                 {
                                     Console.Write("Ingrese el nombre del producto: ");
@@ -235,7 +234,7 @@ class Program
 
                         Console.WriteLine($"Según la cantidad de hectáreas, es necesario {cantidadTotalAbono} bultos de abono.");
 
-                        // Verificamos si hay suficiente abono en el inventario
+                       
                         int indiceAbono = BuscarProducto(inventario, "abono");
 
                         if (indiceAbono != -1 && inventario[indiceAbono].cantidad >= cantidadTotalAbono)
@@ -257,7 +256,7 @@ class Program
                     break;
 
                 case 4:
-                    // Generar informe en PDF
+                    
                     GenerarInformePDF(inventario);
                     break;
 
@@ -271,6 +270,6 @@ class Program
             }
         } while (opcion != 5);
 
-        Console.ReadLine(); // Esperar a que el usuario presione Enter antes de cerrar la consola
+        Console.ReadLine(); 
     }
 }
